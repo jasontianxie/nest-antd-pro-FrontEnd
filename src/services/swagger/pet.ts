@@ -28,7 +28,8 @@ export async function addPet(body: API.Pet, options?: { [key: string]: any }) {
 
 /** Finds Pets by status Multiple status values can be provided with comma separated strings GET /pet/findByStatus */
 export async function findPetsByStatus(
-  params: {
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.findPetsByStatusParams & {
     // query
     /** Status values that need to be considered for filter */
     status: 'available' | 'pending' | 'sold'[];
@@ -40,14 +41,14 @@ export async function findPetsByStatus(
     params: {
       ...params,
     },
-
     ...(options || {}),
   });
 }
 
 /** Finds Pets by tags Muliple tags can be provided with comma separated strings. Use         tag1, tag2, tag3 for testing. GET /pet/findByTags */
 export async function findPetsByTags(
-  params: {
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.findPetsByTagsParams & {
     // query
     /** Tags to filter by */
     tags: string[];
@@ -59,32 +60,32 @@ export async function findPetsByTags(
     params: {
       ...params,
     },
-
     ...(options || {}),
   });
 }
 
 /** Find pet by ID Returns a single pet GET /pet/${param0} */
 export async function getPetById(
-  params: {
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getPetByIdParams & {
     // path
     /** ID of pet to return */
     petId: number;
   },
   options?: { [key: string]: any },
 ) {
-  const { petId: param0 } = params;
+  const { petId: param0, ...queryParams } = params;
   return request<API.Pet>(`/pet/${param0}`, {
     method: 'GET',
-    params: { ...params },
-
+    params: { ...queryParams },
     ...(options || {}),
   });
 }
 
 /** Updates a pet in the store with form data POST /pet/${param0} */
 export async function updatePetWithForm(
-  params: {
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.updatePetWithFormParams & {
     // path
     /** ID of pet that needs to be updated */
     petId: number;
@@ -92,7 +93,7 @@ export async function updatePetWithForm(
   body: { name?: string; status?: string },
   options?: { [key: string]: any },
 ) {
-  const { petId: param0 } = params;
+  const { petId: param0, ...queryParams } = params;
   const formData = new FormData();
 
   Object.keys(body).forEach((ele) => {
@@ -108,7 +109,7 @@ export async function updatePetWithForm(
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
-    params: { ...params },
+    params: { ...queryParams },
     data: formData,
     ...(options || {}),
   });
@@ -116,7 +117,8 @@ export async function updatePetWithForm(
 
 /** Deletes a pet DELETE /pet/${param0} */
 export async function deletePet(
-  params: {
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.deletePetParams & {
     // header
     api_key?: string;
     // path
@@ -125,17 +127,19 @@ export async function deletePet(
   },
   options?: { [key: string]: any },
 ) {
-  const { petId: param0 } = params;
+  const { petId: param0, ...queryParams } = params;
   return request<any>(`/pet/${param0}`, {
     method: 'DELETE',
-    params: { ...params },
+    headers: {},
+    params: { ...queryParams },
     ...(options || {}),
   });
 }
 
 /** uploads an image POST /pet/${param0}/uploadImage */
 export async function uploadFile(
-  params: {
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.uploadFileParams & {
     // path
     /** ID of pet to update */
     petId: number;
@@ -143,7 +147,7 @@ export async function uploadFile(
   body: { additionalMetadata?: string; file?: string },
   options?: { [key: string]: any },
 ) {
-  const { petId: param0 } = params;
+  const { petId: param0, ...queryParams } = params;
   const formData = new FormData();
 
   Object.keys(body).forEach((ele) => {
@@ -159,7 +163,7 @@ export async function uploadFile(
     headers: {
       'Content-Type': 'multipart/form-data',
     },
-    params: { ...params },
+    params: { ...queryParams },
     data: formData,
     ...(options || {}),
   });

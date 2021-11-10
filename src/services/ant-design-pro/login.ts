@@ -4,7 +4,8 @@ import { request } from 'umi';
 
 /** 发送验证码 POST /api/login/captcha */
 export async function getFakeCaptcha(
-  params: {
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getFakeCaptchaParams & {
     // query
     /** 手机号 */
     phone?: string;
@@ -12,10 +13,30 @@ export async function getFakeCaptcha(
   options?: { [key: string]: any },
 ) {
   return request<API.FakeCaptcha>('/api/login/captcha', {
-    method: 'GET',
+    method: 'POST',
     params: {
       ...params,
     },
+    ...(options || {}),
+  });
+}
+
+/** 登录接口 POST /api/login/outLogin */
+export async function outLogin(options?: { [key: string]: any }) {
+  return request<Record<string, any>>('/api/login/outLogin', {
+    method: 'POST',
+    ...(options || {}),
+  });
+}
+
+/** 登录接口 POST /api/login/account */
+export async function login(body: API.LoginParams, options?: { [key: string]: any }) {
+  return request<API.LoginResult>('/api/login/account', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
     ...(options || {}),
   });
 }
