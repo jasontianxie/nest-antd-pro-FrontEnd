@@ -30,7 +30,11 @@ const LoginMessage: React.FC<{
 );
 
 const Login: React.FC = () => {
-  const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
+  const [userLoginState, setUserLoginState] = useState<API.LoginResult>({
+    code: 0,
+    data: null,
+    message: '',
+  });
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
 
@@ -47,10 +51,17 @@ const Login: React.FC = () => {
   };
 
   const handleSubmit = async (values: API.LoginParams) => {
+    const failCb = () => {
+      const defaultLoginFailureMessage = intl.formatMessage({
+        id: 'pages.login.failure',
+        defaultMessage: '登录失败，请重试！',
+      });
+      message.error(defaultLoginFailureMessage);
+    };
     try {
       // 登录
-      const msg = await login({ ...values, type });
-      if (msg.status === 'ok') {
+      const { code, message: msg, data } = await login({ ...values, type }); // type表示是账号登录还是手机号登录
+      if (code === 0) {
         const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
           defaultMessage: '登录成功！',
@@ -63,19 +74,16 @@ const Login: React.FC = () => {
         const { redirect } = query as { redirect: string };
         history.push(redirect || '/');
         return;
+      } else {
+        failCb();
+        // 如果失败去设置用户错误信息
+        setUserLoginState({ code, message: msg, data });
       }
-      console.log(msg);
-      // 如果失败去设置用户错误信息
-      setUserLoginState(msg);
     } catch (error) {
-      const defaultLoginFailureMessage = intl.formatMessage({
-        id: 'pages.login.failure',
-        defaultMessage: '登录失败，请重试！',
-      });
-      message.error(defaultLoginFailureMessage);
+      failCb();
     }
   };
-  const { status, type: loginType } = userLoginState;
+  const { code } = userLoginState;
 
   return (
     <div className={styles.container}>
@@ -121,14 +129,14 @@ const Login: React.FC = () => {
             /> */}
           </Tabs>
 
-          {status === 'error' && loginType === 'account' && (
+          {/* {code !== 0 && type === 'account' && (
             <LoginMessage
               content={intl.formatMessage({
                 id: 'pages.login.accountLogin.errorMessage',
                 defaultMessage: '账户或密码错误(admin/ant.design)',
               })}
             />
-          )}
+          )} */}
           {type === 'account' && (
             <>
               <ProFormText
@@ -137,10 +145,10 @@ const Login: React.FC = () => {
                   size: 'large',
                   prefix: <UserOutlined className={styles.prefixIcon} />,
                 }}
-                placeholder={intl.formatMessage({
-                  id: 'pages.login.username.placeholder',
-                  defaultMessage: '用户名: admin or user',
-                })}
+                // placeholder={intl.formatMessage({
+                //   id: 'pages.login.username.placeholder',
+                //   defaultMessage: '用户名: admin or user',
+                // })}
                 rules={[
                   {
                     required: true,
@@ -159,10 +167,10 @@ const Login: React.FC = () => {
                   size: 'large',
                   prefix: <LockOutlined className={styles.prefixIcon} />,
                 }}
-                placeholder={intl.formatMessage({
-                  id: 'pages.login.password.placeholder',
-                  defaultMessage: '密码: ant.design',
-                })}
+                // placeholder={intl.formatMessage({
+                //   id: 'pages.login.password.placeholder',
+                //   defaultMessage: '密码: ant.design',
+                // })}
                 rules={[
                   {
                     required: true,
@@ -178,7 +186,7 @@ const Login: React.FC = () => {
             </>
           )}
 
-          {status === 'error' && loginType === 'mobile' && <LoginMessage content="验证码错误" />}
+          {code !== 0 && type === 'mobile' && <LoginMessage content="验证码错误" />}
           {type === 'mobile' && (
             <>
               <ProFormText
