@@ -18,9 +18,11 @@ declare namespace API {
     };
     address?: string;
     phone?: string;
+    uid?: number;
+    roles?: string[];
   };
 
-  type LoginResult = {
+  type result = {
     code: number;
     data: any;
     message: string;

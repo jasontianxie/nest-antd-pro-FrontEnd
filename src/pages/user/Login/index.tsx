@@ -30,7 +30,7 @@ const LoginMessage: React.FC<{
 );
 
 const Login: React.FC = () => {
-  const [userLoginState, setUserLoginState] = useState<API.LoginResult>({
+  const [userLoginState, setUserLoginState] = useState<API.result>({
     code: 0,
     data: null,
     message: '',
@@ -58,29 +58,26 @@ const Login: React.FC = () => {
       });
       message.error(defaultLoginFailureMessage);
     };
-    try {
-      // 登录
-      const { code, message: msg, data } = await login({ ...values, type }); // type表示是账号登录还是手机号登录
-      if (code === 0) {
-        const defaultLoginSuccessMessage = intl.formatMessage({
-          id: 'pages.login.success',
-          defaultMessage: '登录成功！',
-        });
-        message.success(defaultLoginSuccessMessage);
-        await fetchUserInfo();
-        /** 此方法会跳转到 redirect 参数所在的位置 */
-        if (!history) return;
-        const { query } = history.location;
-        const { redirect } = query as { redirect: string };
-        history.push(redirect || '/');
-        return;
-      } else {
-        failCb();
-        // 如果失败去设置用户错误信息
-        setUserLoginState({ code, message: msg, data });
-      }
-    } catch (error) {
+    // 登录
+    const { code, message: msg, data } = await login({ ...values, type }); // type表示是账号登录还是手机号登录
+    if (code === 0) {
+      const defaultLoginSuccessMessage = intl.formatMessage({
+        id: 'pages.login.success',
+        defaultMessage: '登录成功！',
+      });
+      localStorage.setItem('user_token', data.accessToken);
+      message.success(defaultLoginSuccessMessage);
+      await fetchUserInfo();
+      /** 此方法会跳转到 redirect 参数所在的位置 */
+      if (!history) return;
+      const { query } = history.location;
+      const { redirect } = query as { redirect: string };
+      history.push(redirect || '/');
+      return;
+    } else {
       failCb();
+      // 如果失败去设置用户错误信息
+      setUserLoginState({ code, message: msg, data });
     }
   };
   const { code } = userLoginState;

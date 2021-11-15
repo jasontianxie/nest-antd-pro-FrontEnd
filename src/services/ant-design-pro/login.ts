@@ -1,6 +1,6 @@
 // @ts-ignore
 /* eslint-disable */
-import { request } from 'umi';
+import { request } from './axios';
 
 /** 发送验证码 POST /api/login/captcha */
 export async function getFakeCaptcha(
@@ -12,8 +12,9 @@ export async function getFakeCaptcha(
   },
   options?: { [key: string]: any },
 ) {
-  return request<API.FakeCaptcha>('/api/login/captcha', {
-    method: 'POST',
+  return request({
+    method: 'get',
+    url: '/login/captcha',
     params: {
       ...params,
     },
@@ -21,22 +22,24 @@ export async function getFakeCaptcha(
   });
 }
 
-/** 登录接口 POST /api/login/outLogin */
+/** 登出接口 POST /api/login/outLogin */
 export async function outLogin(options?: { [key: string]: any }) {
-  return request<Record<string, any>>('/api/login/outLogin', {
-    method: 'POST',
+  return request({
+    method: 'post',
+    url: '/login/outLogin',
     ...(options || {}),
   });
 }
 
 /** 登录接口 POST /api/login/account */
 export async function login(body: API.LoginParams, options?: { [key: string]: any }) {
-  return request<API.LoginResult>('/api/auth/login', {
-    method: 'POST',
+  return request({
+    method: 'post',
+    url: '/auth/login',
+    data: body,
     headers: {
       'Content-Type': 'application/json',
     },
-    data: body,
     ...(options || {}),
   });
 }
