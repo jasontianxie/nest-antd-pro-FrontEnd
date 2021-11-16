@@ -24,7 +24,7 @@ export default {
   'pages.welcome.advancedComponent': '高度なコンポーネント',
   'pages.welcome.link': 'ようこそ',
   'pages.welcome.advancedLayout': '高度なレイアウト',
-  'pages.welcome.alertMessage': 'より高速で強力な頑丈なコンポーネントがリリースされました。',
+  'pages.welcome.alertMessage': 'Welcome to my Blog.',
   'pages.admin.subPage.title': 'このページは管理者のみが表示できます',
   'pages.admin.subPage.alertMessage':
     'Umi uiがリリースされました。npm run uiを使用して体験してください。',

@@ -24,8 +24,7 @@ export default {
   'pages.welcome.advancedComponent': 'Formulir Lanjutan',
   'pages.welcome.link': 'Selamat datang',
   'pages.welcome.advancedLayout': 'Tata letak Lanjutan',
-  'pages.welcome.alertMessage':
-    'Komponen heavy-duty yang lebih cepat dan lebih kuat telah dirilis.',
+  'pages.welcome.alertMessage': 'Welcome to my Blog.',
   'pages.admin.subPage.title': 'Halaman ini hanya dapat dilihat oleh admin',
   'pages.admin.subPage.alertMessage':
     'umi ui telah dirilis, silahkan gunakan npm run ui untuk memulai pengalaman.',

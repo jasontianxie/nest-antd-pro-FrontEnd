@@ -26,7 +26,7 @@ export default {
   'pages.welcome.advancedComponent': 'অ্যাডভান্সড কম্পোনেন্ট',
   'pages.welcome.link': 'স্বাগতম',
   'pages.welcome.advancedLayout': 'অ্যাডভান্সড লেআউট',
-  'pages.welcome.alertMessage': 'দ্রুত এবং শক্তিশালী ভারী শুল্ক উপাদান প্রকাশ করা হয়েছে।',
+  'pages.welcome.alertMessage': 'Welcome to my Blog',
   'pages.admin.subPage.title': 'এই পৃষ্ঠাটি কেবল অ্যাডমিন দ্বারা দেখা যাবে',
   'pages.admin.subPage.alertMessage':
     'UMI UI এখন প্রকাশিত হয়েছে, অভিজ্ঞতা শুরু করতে npm run ui ব্যবহার করতে স্বাগতম।',

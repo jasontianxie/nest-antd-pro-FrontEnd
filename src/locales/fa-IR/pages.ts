@@ -23,7 +23,7 @@ export default {
   'pages.welcome.advancedComponent': 'مولفه پیشرفته',
   'pages.welcome.link': 'خوش آمدید',
   'pages.welcome.advancedLayout': 'چیدمان پیشرفته',
-  'pages.welcome.alertMessage': 'اجزای سنگین تر سریعتر و قوی تر آزاد شده اند.',
+  'pages.welcome.alertMessage': 'Welcome to my Blog',
   'pages.admin.subPage.title': 'این صفحه فقط توسط مدیر قابل مشاهده است',
   'pages.admin.subPage.alertMessage':
     'رابط کاربری Umi اکنون منتشر شده است ، برای شروع تجربه استفاده از npm run ui خوش آمدید.',

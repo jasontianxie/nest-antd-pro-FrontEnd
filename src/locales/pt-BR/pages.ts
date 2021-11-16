@@ -24,7 +24,7 @@ export default {
   'pages.welcome.advancedComponent': 'Componente Avançado',
   'pages.welcome.link': 'Bem-vindo',
   'pages.welcome.advancedLayout': 'Layout Avançado',
-  'pages.welcome.alertMessage': 'Componentes pesados mais rápidos e mais fortes foram lançados.',
+  'pages.welcome.alertMessage': 'Welcome to my Blog.',
   'pages.admin.subPage.title': 'Esta página só pode ser vista pelo Admin',
   'pages.admin.subPage.alertMessage':
     'O Umi ui foi lançado, bem-vindo ao usar o npm run ui para iniciar a experiência.',
