@@ -28,7 +28,7 @@
     path: '/admin',
     name: 'admin',
     icon: 'crown',
-    access: 'canAdmin',
+    access: 'canAdmin', // antd pro 权限管理：https://pro.ant.design/zh-CN/docs/authority-management
     component: './Admin',
     routes: [
       {
