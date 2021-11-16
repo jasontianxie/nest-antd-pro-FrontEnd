@@ -9,7 +9,7 @@ import {
 import { Alert, message, Tabs } from 'antd';
 import React, { useState } from 'react';
 import { ProFormCaptcha, ProFormText, LoginForm } from '@ant-design/pro-form';
-import { useIntl, history, FormattedMessage, SelectLang, useModel } from 'umi';
+import { useIntl, history, FormattedMessage, useModel } from 'umi';
 import Footer from '@/components/Footer';
 import { login } from '@/services/ant-design-pro/login';
 import { getFakeCaptcha } from '@/services/ant-design-pro/login';
@@ -84,13 +84,13 @@ const Login: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.lang} data-lang>
+      {/* <div className={styles.lang} data-lang>
         {SelectLang && <SelectLang />}
-      </div>
+      </div> */}
       <div className={styles.content}>
         <LoginForm
           // logo={<img alt="logo" src="/logo.svg" />}
-          title="Ant Design Pro Blog"
+          title="My Web Log"
           // subTitle={intl.formatMessage({ id: 'pages.layouts.userLayout.title' })}
           initialValues={{
             autoLogin: true,
