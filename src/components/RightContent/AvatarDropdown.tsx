@@ -41,6 +41,16 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
         loginOut();
         return;
       }
+      if (key === 'login') {
+        const { pathname } = history.location;
+        history.replace({
+          pathname: '/user/login',
+          search: stringify({
+            redirect: pathname,
+          }),
+        });
+        return;
+      }
       history.push(`/account/${key}`);
     },
     [setInitialState],
@@ -65,7 +75,23 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
   const { currentUser } = initialState;
 
   if (!currentUser || !currentUser.name) {
-    return loading;
+    return (
+      <HeaderDropdown
+        overlay={
+          <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
+            <Menu.Item key="login">
+              <LogoutOutlined />
+              登录
+            </Menu.Item>
+          </Menu>
+        }
+      >
+        <span className={`${styles.action} ${styles.account}`}>
+          <Avatar icon={<UserOutlined />} />
+          <span className={`${styles.name} anticon`}>Anonymous</span>
+        </span>
+      </HeaderDropdown>
+    );
   }
 
   const menuHeaderDropdown = (
