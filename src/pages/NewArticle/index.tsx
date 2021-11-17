@@ -29,7 +29,7 @@ const NewArticle: React.FC = () => {
       <Card>
         <div className={styles.wrap}>
           <div className={styles.textWrap}>
-            <h3>input markdown text here</h3>
+            <h3 className={styles.textTitle}>input markdown text here:</h3>
             {/* <div
               className={styles.textarea}
               contentEditable="true"
@@ -37,11 +37,13 @@ const NewArticle: React.FC = () => {
             ></div> */}
             <textarea
               className={styles.textarea}
-              onChange={(e: any) => setMarkdownText(e.target.value)}
+              onChange={(e: any) => {
+                setMarkdownText(e.target.value);
+              }}
             />
           </div>
           <div className={styles.previewWrap}>
-            <h3>this is markdown preview</h3>
+            <h3 className={styles.textTitle}>this is markdown preview:</h3>
             <div
               className={styles.preview}
               dangerouslySetInnerHTML={{ __html: marked.parse(markdownText) }}
