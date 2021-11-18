@@ -25,11 +25,19 @@
     component: './Welcome',
   },
   {
-    path: '/newArticle',
-    name: 'newArticle',
+    path: '/manageArticle',
+    name: 'manageArticle',
     icon: 'form',
     access: 'canAdmin', // antd pro 权限管理：https://pro.ant.design/zh-CN/docs/authority-management
-    component: './NewArticle',
+    routes: [
+      {
+        path: '/manageArticle/:id',
+        component: './ManageArticle',
+      },
+      {
+        component: './ManageArticle',
+      },
+    ],
   },
   {
     path: '/admin',
