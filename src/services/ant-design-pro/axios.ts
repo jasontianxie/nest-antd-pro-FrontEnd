@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-export const request = (opt: any) => {
+export const request: <T>(opt: any) => Promise<{ code: number; data: T; message: string }> = (
+  opt,
+) => {
   const defaultOption = {
     baseURL: '/api',
     timeout: 10000,
