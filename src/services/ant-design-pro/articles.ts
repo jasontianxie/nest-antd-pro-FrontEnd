@@ -1,7 +1,6 @@
 // @ts-ignore
 /* eslint-disable */
 import { request } from './axios';
-import { message } from 'antd';
 
 /** 新增或编辑文章 POST /api/article */
 export async function updateArticle(options?: { [key: string]: any }) {
@@ -9,13 +8,6 @@ export async function updateArticle(options?: { [key: string]: any }) {
     method: 'post',
     url: '/article/update',
     ...(options || {}),
-  }).then((res) => {
-    if (res.code === 403) {
-      message.error('need authorization');
-      return false;
-    } else {
-      return res;
-    }
   });
 }
 
