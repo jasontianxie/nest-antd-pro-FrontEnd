@@ -6,6 +6,7 @@ import hljs from 'highlight.js';
 import styles from './index.less';
 import 'highlight.js/styles/atom-one-dark.css';
 import type { IRouteComponentProps } from 'umi';
+import { useModel } from 'umi';
 import { updateArticle } from '@/services/ant-design-pro/articles';
 
 const text = window.atob(
@@ -31,6 +32,8 @@ marked.setOptions({
 const NewArticle: React.FC<IRouteComponentProps<{ id: string }, {}>> = (props) => {
   // IRouteComponentProps泛型参数的第一个是params的参数，第二个是query的参数
   const [markdownText, setMarkdownText] = useState(props.match.params.id ? text : '');
+  const { initialState } = useModel('@@initialState');
+  const { currentUser } = initialState || {};
   const {
     match: {
       params: { id },
@@ -49,7 +52,9 @@ const NewArticle: React.FC<IRouteComponentProps<{ id: string }, {}>> = (props) =
           onClick={async () => {
             const { code } = await updateArticle({
               data: {
-                id,
+                id: id && Number(id),
+                userId: currentUser?.uid,
+                article: markdownText,
               },
             });
             if (code === 0) {
