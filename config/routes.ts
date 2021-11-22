@@ -40,6 +40,20 @@
     ],
   },
   {
+    path: '/articleList',
+    name: 'articleList',
+    icon: 'table',
+    routes: [
+      {
+        path: '/articleList/:id',
+        component: './ArticleList',
+      },
+      {
+        component: './ArticleList',
+      },
+    ],
+  },
+  {
     path: '/admin',
     name: 'admin',
     icon: 'crown',
@@ -57,12 +71,12 @@
       },
     ],
   },
-  {
-    name: 'list.table-list',
-    icon: 'table',
-    path: '/list',
-    component: './TableList',
-  },
+  // {
+  //   name: 'list.table-list',
+  //   icon: 'table',
+  //   path: '/list',
+  //   component: './TableList',
+  // },
   {
     path: '/',
     redirect: '/welcome',
