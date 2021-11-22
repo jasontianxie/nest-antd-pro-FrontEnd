@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Card, Button, message } from 'antd';
+import { Card, Button, message, Input } from 'antd';
 import { marked } from 'marked';
 import hljs from 'highlight.js';
 import styles from './index.less';
@@ -32,6 +32,9 @@ marked.setOptions({
 const NewArticle: React.FC<IRouteComponentProps<{ id: string }, {}>> = (props) => {
   // IRouteComponentProps泛型参数的第一个是params的参数，第二个是query的参数
   const [markdownText, setMarkdownText] = useState(props.match.params.id ? text : '');
+  const [articleTitle, setArticleTitle] = useState(
+    props.match.params.id ? 'this is a test article' : '',
+  );
   const { initialState } = useModel('@@initialState');
   const { currentUser } = initialState || {};
   const {
@@ -50,11 +53,16 @@ const NewArticle: React.FC<IRouteComponentProps<{ id: string }, {}>> = (props) =
           key="2"
           type="primary"
           onClick={async () => {
+            if (articleTitle === '') {
+              message.error('please input article title');
+              return;
+            }
             const { code } = await updateArticle({
               data: {
                 id: id && Number(id),
                 userId: currentUser?.uid,
                 article: markdownText,
+                articleTitle: articleTitle,
               },
             });
             if (code === 0) {
@@ -69,6 +77,13 @@ const NewArticle: React.FC<IRouteComponentProps<{ id: string }, {}>> = (props) =
       ]}
     >
       <Card>
+        <div className={styles.title}>
+          <Input
+            value={articleTitle}
+            placeholder="please input article title"
+            onChange={(e) => setArticleTitle(e.target.value)}
+          />
+        </div>
         <div className={styles.wrap}>
           <div className={styles.textWrap}>
             <h3 className={styles.textTitle}>
