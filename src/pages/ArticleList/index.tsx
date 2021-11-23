@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Card, message, List } from 'antd';
+import { Card, message, List, Popconfirm } from 'antd';
 import { marked } from 'marked';
 import hljs from 'highlight.js';
 import styles from './index.less';
 import 'highlight.js/styles/atom-one-dark.css';
 import type { IRouteComponentProps } from 'umi';
-import { getArticles } from '@/services/ant-design-pro/articles';
+import { getArticles, deleteArticle } from '@/services/ant-design-pro/articles';
 import type { IArticle } from '@/pages/ArticleList/types';
 import moment from 'moment';
 
@@ -36,28 +36,48 @@ const NewArticle: React.FC<IRouteComponentProps<{ id: string }, {}>> = (props) =
   const [currentArticle, setCurrentArticle] = useState<IArticle>();
   const [articles, setArticles] = useState<IArticle[]>([]);
 
+  const getSingularArticle = () => {
+    getArticles<IArticle>({
+      url: `/article/${id}`,
+    }).then(({ code, data }) => {
+      if (code === 0) {
+        setCurrentArticle(data);
+      } else {
+        message.error('get article detail failed');
+      }
+    });
+  };
+
+  const getAllArticles = () => {
+    getArticles<IArticle[]>({
+      url: '/article/all',
+    }).then(({ code, data }) => {
+      if (code === 0) {
+        setArticles(data);
+      } else {
+        message.error('get article list failed');
+      }
+    });
+  };
+
+  const removeArticle = (articleId: number) => {
+    deleteArticle({ url: `/article/${articleId}` }).then(({ code }) => {
+      if (code === 0) {
+        message.success('delete success');
+        getAllArticles();
+      } else {
+        message.error('delete fail');
+      }
+    });
+  };
+
   useEffect(() => {
     if (id) {
-      getArticles<IArticle>({
-        url: `/article/${id}`,
-      }).then(({ code, data }) => {
-        if (code === 0) {
-          setCurrentArticle(data);
-        } else {
-          message.error('get article detail failed');
-        }
-      });
+      getSingularArticle();
     } else {
-      getArticles<IArticle[]>({
-        url: '/article/all',
-      }).then(({ code, data }) => {
-        if (code === 0) {
-          setArticles(data);
-        } else {
-          message.error('get article detail failed');
-        }
-      });
+      getAllArticles();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   return (
@@ -69,9 +89,7 @@ const NewArticle: React.FC<IRouteComponentProps<{ id: string }, {}>> = (props) =
       {id ? (
         <Card>
           <h1 className={styles.title}>{currentArticle && currentArticle.articleTitle}</h1>
-          <div
-            dangerouslySetInnerHTML={{ __html: marked.parse(currentArticle?.article || '') }}
-          ></div>
+          <div dangerouslySetInnerHTML={{ __html: marked.parse(currentArticle?.article || '') }} />
         </Card>
       ) : (
         <Card>
@@ -82,11 +100,20 @@ const NewArticle: React.FC<IRouteComponentProps<{ id: string }, {}>> = (props) =
               <List.Item
                 actions={[
                   <a
-                    key="list-loadmore-edit"
+                    key="list-article-edit"
                     onClick={() => props.history.push(`/manageArticle/${item.id}`)}
                   >
                     edit
                   </a>,
+                  <Popconfirm
+                    placement="top"
+                    title={'are you sure?'}
+                    onConfirm={() => removeArticle(item.id)}
+                    okText="Yes"
+                    cancelText="No"
+                  >
+                    <a key="list-article-delete">delete</a>
+                  </Popconfirm>,
                 ]}
               >
                 <List.Item.Meta

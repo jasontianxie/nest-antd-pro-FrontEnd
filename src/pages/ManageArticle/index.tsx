@@ -117,7 +117,7 @@ const NewArticle: React.FC<IRouteComponentProps<{ id: string }, {}>> = (props) =
             <div
               className={styles.preview}
               dangerouslySetInnerHTML={{ __html: marked.parse(markdownText) }}
-            ></div>
+            />
           </div>
         </div>
       </Card>

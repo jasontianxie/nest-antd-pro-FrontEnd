@@ -15,7 +15,6 @@ export async function updateArticle<T>(options?: { [key: string]: any }) {
 export async function deleteArticle(options?: { [key: string]: any }) {
   return request({
     method: 'delete',
-    url: '/article/delete',
     ...(options || {}),
   });
 }
