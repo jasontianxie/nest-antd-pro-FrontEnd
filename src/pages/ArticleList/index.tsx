@@ -6,6 +6,7 @@ import hljs from 'highlight.js';
 import styles from './index.less';
 import 'highlight.js/styles/atom-one-dark.css';
 import type { IRouteComponentProps } from 'umi';
+import { useModel } from 'umi';
 import { getArticles, deleteArticle } from '@/services/ant-design-pro/articles';
 import type { IArticle } from '@/pages/ArticleList/types';
 import moment from 'moment';
@@ -35,6 +36,8 @@ const NewArticle: React.FC<IRouteComponentProps<{ id: string }, {}>> = (props) =
   } = props;
   const [currentArticle, setCurrentArticle] = useState<IArticle>();
   const [articles, setArticles] = useState<IArticle[]>([]);
+  const { initialState } = useModel('@@initialState');
+  const { currentUser } = initialState || {};
 
   const getSingularArticle = () => {
     getArticles<IArticle>({
@@ -98,23 +101,27 @@ const NewArticle: React.FC<IRouteComponentProps<{ id: string }, {}>> = (props) =
             dataSource={articles}
             renderItem={(item) => (
               <List.Item
-                actions={[
-                  <a
-                    key="list-article-edit"
-                    onClick={() => props.history.push(`/manageArticle/${item.id}`)}
-                  >
-                    edit
-                  </a>,
-                  <Popconfirm
-                    placement="top"
-                    title={'are you sure?'}
-                    onConfirm={() => removeArticle(item.id)}
-                    okText="Yes"
-                    cancelText="No"
-                  >
-                    <a key="list-article-delete">delete</a>
-                  </Popconfirm>,
-                ]}
+                actions={
+                  currentUser?.uid
+                    ? [
+                        <a
+                          key="list-article-edit"
+                          onClick={() => props.history.push(`/manageArticle/${item.id}`)}
+                        >
+                          edit
+                        </a>,
+                        <Popconfirm
+                          placement="top"
+                          title={'are you sure?'}
+                          onConfirm={() => removeArticle(item.id)}
+                          okText="Yes"
+                          cancelText="No"
+                        >
+                          <a key="list-article-delete">delete</a>
+                        </Popconfirm>,
+                      ]
+                    : []
+                }
               >
                 <List.Item.Meta
                   title={
